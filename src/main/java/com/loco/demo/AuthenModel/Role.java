@@ -11,7 +11,6 @@ import java.util.Objects;
 public class Role implements GrantedAuthority {
     @Getter
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="role_id", nullable = false, length = 50)
     private String roleId;
     @Column(name = "authority", length = 255)

@@ -13,5 +13,5 @@ public interface UserAuthenRepo extends JpaRepository<User, String> {
     public Optional<User> findUserByUsername(String username) ;
     public Optional<User> findAllByPassword(String password) ;
     public Optional<User> findUserByEmail(String email);
-
+    public Optional<User> findUserByPhoneNumber(String phoneNumber);
 }
