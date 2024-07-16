@@ -5,6 +5,7 @@ import com.loco.demo.AuthenModel.User;
 import com.loco.demo.DTO.AuthenDTO.GoogleLoginDTO;
 import com.loco.demo.DTO.AuthenDTO.JSONresponse;
 import com.loco.demo.DTO.AuthenDTO.LoginResponseDTO;
+import com.loco.demo.DTO.JSON.RegisterServiceReturnDTO;
 import com.loco.demo.repository.AuthenRepo.RoleAuthenRepo;
 import com.loco.demo.repository.AuthenRepo.UserAuthenRepo;
 import com.loco.demo.utils.Constants.Const;
@@ -50,7 +51,8 @@ public class AuthenticationService {
 
     private Role addIntoRoleRepositoryAndReturnDefaultUserRole() {
         String fakeID = UUID.randomUUID().toString();
-        Role newRole = new Role(fakeID,"USER") ;
+        Role newRole = new Role(fakeID,"USER");
+        System.out.println(newRole);
         roleRepository.save(newRole) ;
         return newRole ;
     }
@@ -96,7 +98,7 @@ public class AuthenticationService {
         return loginResponseDTO(newUserCreatedFromGoogleAccount.getUsername(),Const.passwordForGoogleLoginAndRegister);
     }
 
-    public JSONresponse registerUser(String username, String password, String email, String phoneNumber) {
+    public RegisterServiceReturnDTO registerUser(String username, String password, String email, String phoneNumber) {
         String message = "";
         Role userRole = roleRepository.findByAuthority("USER").isPresent()
                 ? roleRepository.findByAuthority("USER").get()
@@ -104,26 +106,23 @@ public class AuthenticationService {
         String encodedPassword = passwordEncoder.encode(password);
         Set<Role> roles = new HashSet<>();
         roles.add(userRole);
-        User newApplicationUser = new User(
-                username, encodedPassword, email,phoneNumber ,roles
+        String encodedUserId = UUID.randomUUID().toString();
+        User newApplicationUser = new User(encodedUserId,
+                username, encodedPassword, email,phoneNumber ,roles,password
         );
         if(userRepository.findUserByEmail(email).isPresent()) {
             message += "Email is existed. ";
         }
-//        if(userRepository.findUserByPhoneNumber(phoneNumber).isPresent()) {
-//            message += "Phone number is existed. ";
-//        }
+        if(userRepository.findUserByPhoneNumber(phoneNumber).isPresent()) {
+            message += "Phone number is existed. ";
+        }
         if(userRepository.findUserByUsername(username).isPresent()) {
             message += "Username is existed. ";
         }
         if(message.isEmpty()) userRepository.save(newApplicationUser);
-        User trackedUser = userRepository.findUserByUsername(username).isPresent()
-                ? userRepository.findUserByUsername(username).get()
-                : null ;
-
         return message.isEmpty()
-                ? new JSONresponse(newApplicationUser,"Register Success!")
-                : new JSONresponse(null,message);
+                ? new RegisterServiceReturnDTO(newApplicationUser,"Register Success!")
+                : new RegisterServiceReturnDTO(null,message);
     }
 
     public Boolean isRegisterAccepted(String username) {
@@ -146,8 +145,10 @@ public class AuthenticationService {
             User trackedUser = userRepository.findUserByUsername(username).isPresent()
                     ? userRepository.findUserByUsername(username).get()
                     : null ;
+            System.out.println(trackedUser);
             return new LoginResponseDTO(trackedUser,token);
         } catch (Exception authenticationException) {
+            System.out.println(authenticationException.getMessage());
             return new LoginResponseDTO(null,"");
         }
     }

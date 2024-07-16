@@ -1,8 +1,8 @@
-package com.loco.demo.DTO.AuthenDTO;
+package com.loco.demo.DTO.JSON;
 
 import com.loco.demo.AuthenModel.User;
 
-public record JSONresponse (
+public record RegisterServiceReturnDTO(
         User user,
         String message
 ) {
