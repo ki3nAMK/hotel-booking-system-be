@@ -29,6 +29,7 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager ;
     private final TokenService tokenService ;
 
+
     @Autowired
     public AuthenticationService(UserAuthenRepo userRepository, RoleAuthenRepo roleRepository, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, TokenService tokenService) {
         this.userRepository = userRepository;
