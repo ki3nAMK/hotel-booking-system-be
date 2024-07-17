@@ -1,13 +1,18 @@
 package com.loco.demo.AuthenModel;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
+
 import org.springframework.security.core.GrantedAuthority;
 
+import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Table(name = "role")
+@AllArgsConstructor
 public class Role implements GrantedAuthority {
     @Getter
     @Id
@@ -15,6 +20,10 @@ public class Role implements GrantedAuthority {
     private String roleId;
     @Column(name = "authority", length = 255)
     private String authority;
+    @Getter
+    @Setter
+    @OneToMany(mappedBy = "role",fetch = FetchType.EAGER,cascade = CascadeType.MERGE)
+    private List<User> users;
 
     public Role() {
         super();
