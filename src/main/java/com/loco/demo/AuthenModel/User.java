@@ -22,8 +22,8 @@ public class User implements UserDetails {
     private String name;
     private String email;
     private String avatar;
-    @Column(name = "phone")
-    private String phoneNumber;
+    @Column(name = "phone", length = 255)
+    private String phoneNumber;+:
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
