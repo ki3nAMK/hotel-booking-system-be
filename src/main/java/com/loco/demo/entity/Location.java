@@ -11,10 +11,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Guide {
+public class Location {
     @Id
-    @Column(name = "id", length = 50)
+    @Column(name="id",length=50)
     private String id;
-    @Column(name = "thumbnail", length = 255)
-    private String thumbnail;
+    @Column(name="x_coordinate")
+    private Double xCoordinate;
+    @Column(name="y_coordinate")
+    private Double yCoordinate;
 }

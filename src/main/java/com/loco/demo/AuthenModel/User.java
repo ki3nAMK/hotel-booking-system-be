@@ -37,7 +37,7 @@ public class User implements UserDetails {
     @Column(name = "location", length = 255)
     private String location;
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="role_id")
+    @JoinColumn(name = "role_id",referencedColumnName = "role_id")
     private Role role;
     @Column(name = "online_status")
     private Boolean onlineStatus;
@@ -49,6 +49,8 @@ public class User implements UserDetails {
     @JoinTable(name = "user_role_junction", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = {
             @JoinColumn(name = "role_id") })
     private Set<Role> authorities;
+
+
 
     public User() {
     }
