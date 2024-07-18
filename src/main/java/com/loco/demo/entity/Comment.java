@@ -18,26 +18,26 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "message")
+@Table(name = "comment")
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class Message {
+public class Comment {
     @Id
     @Column(name = "id", length = 50)
     private String id;
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "chat_id")
-    private ChatRoom chatId;
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
+    private User user;
+    @Column(name = "create_at", columnDefinition = "DATE")
+    private Date createAt;
     @Lob
-    @Column(columnDefinition = "TEXT", name = "content")
+    @Column(name = "content", columnDefinition = "TEXT")
     private String content;
     @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "sender_id")
-    private User senderId;
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "recipient_id")
-    private User recipientId;
-    @Column(name = "time_stamp", columnDefinition = "DATE")
-    private Date timeStamp;
+    @JoinColumn(name = "rating_id")
+    private HotelRating rating;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "hotel_id")
+    private Hotel hotel;
 }

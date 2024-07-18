@@ -1,0 +1,87 @@
+package com.loco.demo.entity;
+
+import java.util.Date;
+import java.util.List;
+
+import com.loco.demo.AuthenModel.User;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.Lob;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Entity
+@Table(name = "hotel")
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
+public class Hotel {
+    @Id
+    @Column(name = "id", length = 50)
+    private String id;
+    @Column(name = "create_at", columnDefinition = "DATE")
+    private Date createAt;
+    @Column(name = "thumbnail", length = 255)
+    private String thumbnail;
+    @Column(name = "name", length = 50)
+    private String name;
+    @Column(name = "location", length = 255)
+    private String location;
+    @Column(name = "price")
+    private Integer price;
+    @Column(name = "min_price")
+    private Integer minPrice;
+    @Column(name = "max_price")
+    private Integer maxPrice;
+    @Column(name = "min_period")
+    private Byte minPeriod;
+    @Column(name = "medium_period")
+    private Byte mediumPeriod;
+    @Column(name = "max_period")
+    private Byte maxPeriod;
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "furniture_id")
+    private Furniture furniture;
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "seller_id")
+    private User seller;
+    @Lob
+    @Column(name = "img_list", columnDefinition = "TEXT")
+    private String imgList;
+    @Column(name = "amenities", length = 255)
+    private String amenities;
+    @Column(name = "safety", length = 255)
+    private String safety;
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "detail_id")
+    private HotelDetail detail;
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "rating_id")
+    private HotelRating rating;
+    @Column(name = "capacity")
+    private Integer capacity;
+    @Column(name = "type", length = 255)
+    private String type;
+    @Column(name = "status")
+    private Byte status;
+    @Lob
+    @Column(name = "description", columnDefinition = "TEXT")
+    private String description;
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "location_id")
+    private Location locationId;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "wish_list_with_hotel", joinColumns = { @JoinColumn(name = "hotel_id") }, inverseJoinColumns = {
+            @JoinColumn(name = "wish_list_id") })
+    private List<WishList> wishLists;
+}

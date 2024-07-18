@@ -1,6 +1,6 @@
 package com.loco.demo.entity;
 
-import java.util.List;
+import java.util.Date;
 
 import com.loco.demo.AuthenModel.User;
 
@@ -9,31 +9,30 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.Lob;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
-@Table(name = "chat_room")
-public class ChatRoom {
+@Table(name = "notification")
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class Notification {
     @Id
-    @Column(length = 50)
+    @Column(name = "id", length = 50)
     private String id;
+    @Lob
+    @Column(name = "content", columnDefinition = "TEXT")
+    private String content;
     @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "sender_id")
-    private User senderId;
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "recipient_id")
-    private User recipientId;
-
-    // Direction
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "chatId")
-    private List<Message> message;
-
+    @JoinColumn(name = "user_id", unique = true)
+    private User userId;
+    @Column(name = "create_at", columnDefinition = "DATE")
+    private Date createAt;
+    @Column(name = "status")
+    private Byte status;
 }

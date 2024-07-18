@@ -4,6 +4,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,6 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Table(name = "hotel_detail")
 public class HotelDetail {
     @Id
     @Column(name = "id", length = 50)
@@ -19,6 +21,6 @@ public class HotelDetail {
     @Column(name = "title", length = 255)
     private String title;
     @Lob
-    @Column(columnDefinition = "TEXT",name = "content")
+    @Column(columnDefinition = "TEXT", name = "content")
     private String content;
 }

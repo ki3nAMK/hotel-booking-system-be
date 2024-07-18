@@ -3,6 +3,7 @@ package com.loco.demo.entity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,18 +12,19 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Table(name = "furniture")
 public class Furniture {
     @Id
-    @Column(name="id", length = 50)
+    @Column(name = "id", length = 50)
     private String id;
-    @Column(name="bed")
+    @Column(name = "bed")
     private Integer bed;
-    @Column(name="bath")
+    @Column(name = "bath")
     private Integer bath;
-    @Column(name="vehicle")
+    @Column(name = "vehicle")
     private Integer vehicle;
-    @Column(name="car")
+    @Column(name = "car")
     private Integer car;
-    @Column(name="pet")
+    @Column(name = "pet")
     private Integer pet;
 }

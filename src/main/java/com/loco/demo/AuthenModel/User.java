@@ -21,7 +21,7 @@ public class User implements UserDetails {
     private String name;
     @Column(name = "gender")
     private Byte gender;
-    @Column(name = "birthday")
+    @Column(name = "birthday", columnDefinition = "DATE")
     private Date birthday;
     @Column(name = "email", length = 50)
     private String email;
@@ -32,25 +32,22 @@ public class User implements UserDetails {
     @Column(name = "decode_password", length = 255)
     private String decodePassword;
     @Lob
-    @Column(name = "sumary",columnDefinition = "TEXT")
+    @Column(name = "sumary", columnDefinition = "TEXT")
     private String sumary;
     @Column(name = "location", length = 255)
     private String location;
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "role_id",referencedColumnName = "role_id")
+    @JoinColumn(name = "role_id", referencedColumnName = "role_id")
     private Role role;
     @Column(name = "online_status")
     private Boolean onlineStatus;
-    @Column(name = "last_online")
+    @Column(name = "last_online", columnDefinition = "DATE")
     private Date lastOnline;
-    
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_role_junction", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = {
             @JoinColumn(name = "role_id") })
     private Set<Role> authorities;
-
-
 
     public User() {
     }
@@ -85,8 +82,6 @@ public class User implements UserDetails {
         this.authorities = roles;
         this.password = encodedPassword;
     }
-
-    
 
     public User(String userId, String avatar, String username, String name, Byte gender, Date birthday, String email,
             String phoneNumber, String password, String decodePassword, String sumary, String location, Role role,
