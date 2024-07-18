@@ -25,7 +25,6 @@ hs_err_pid*
 replay_pid*
 =======
 HELP.md
-target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
@@ -54,6 +53,7 @@ target/
 build/
 !**/src/main/**/build/
 !**/src/test/**/build/
+/target
 
 ### VS Code ###
 .vscode/
