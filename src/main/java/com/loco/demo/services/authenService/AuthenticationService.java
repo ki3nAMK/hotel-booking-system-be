@@ -6,6 +6,7 @@ import com.loco.demo.DTO.AuthenDTO.GoogleLoginDTO;
 import com.loco.demo.DTO.AuthenDTO.JSONresponse;
 import com.loco.demo.DTO.AuthenDTO.LoginResponseDTO;
 import com.loco.demo.DTO.JSON.RegisterServiceReturnDTO;
+import com.loco.demo.DTO.JSON.TokenDTO;
 import com.loco.demo.repository.AuthenRepo.RoleAuthenRepo;
 import com.loco.demo.repository.AuthenRepo.UserAuthenRepo;
 import com.loco.demo.utils.Constants.Const;
@@ -54,7 +55,7 @@ public class AuthenticationService {
         Role newRole = new Role(fakeID,"USER");
         System.out.println(newRole);
         roleRepository.save(newRole) ;
-        return newRole ;
+        return newRole;
     }
 
     private LoginResponseDTO handleGoogleLoginWhenEmailIsExisted(GoogleLoginDTO googleLoginDTO) {
@@ -65,7 +66,7 @@ public class AuthenticationService {
                         userFromLoginByGoogle.getUsername(),
                         Const.passwordForGoogleLoginAndRegister)
         );
-        String token = tokenService.generateJwt(authentication) ;
+        TokenDTO token = tokenService.generateJwt(authentication) ;
         User trackedUser = userRepository.findUserByUsername(userFromLoginByGoogle.getUsername()).isPresent()
                 ? userRepository.findUserByUsername(userFromLoginByGoogle.getUsername()).get()
                 : null ;
@@ -141,15 +142,14 @@ public class AuthenticationService {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(username,password)
             );
-            String token = tokenService.generateJwt(authentication) ;
+            TokenDTO token = tokenService.generateJwt(authentication) ;
             User trackedUser = userRepository.findUserByUsername(username).isPresent()
                     ? userRepository.findUserByUsername(username).get()
                     : null ;
-            System.out.println(trackedUser);
             return new LoginResponseDTO(trackedUser,token);
         } catch (Exception authenticationException) {
             System.out.println(authenticationException.getMessage());
-            return new LoginResponseDTO(null,"");
+            return new LoginResponseDTO(null,null);
         }
     }
 

@@ -1,15 +1,16 @@
 package com.loco.demo.DTO.AuthenDTO;
 
 import com.loco.demo.AuthenModel.User;
+import com.loco.demo.DTO.JSON.TokenDTO;
 
 public class LoginResponseDTO {
     private User user ;
-    private String jwt ;
+    private TokenDTO jwt ;
 
     public LoginResponseDTO() {
     }
 
-    public LoginResponseDTO(User user, String jwt) {
+    public LoginResponseDTO(User user, TokenDTO jwt) {
         this.user = user;
         this.jwt = jwt;
     }
@@ -22,11 +23,11 @@ public class LoginResponseDTO {
         this.user = user;
     }
 
-    public String getJwt() {
+    public TokenDTO getJwt() {
         return jwt;
     }
 
-    public void setJwt(String jwt) {
+    public void setJwt(TokenDTO jwt) {
         this.jwt = jwt;
     }
 }
