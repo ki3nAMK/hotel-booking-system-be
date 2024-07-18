@@ -1,5 +1,6 @@
 package com.loco.demo.services.authenService;
 
+import com.loco.demo.DTO.JSON.TokenDTO;
 import org.antlr.v4.runtime.misc.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -26,7 +27,7 @@ public class TokenService {
         this.jwtDecoder = jwtDecoder;
     }
 
-    public String generateJwt(@NotNull Authentication authentication){
+    public TokenDTO generateJwt(@NotNull Authentication authentication){
         Date currentDate = new Date();
         Calendar expirationCalendar = Calendar.getInstance();
         expirationCalendar.setTime(currentDate);
@@ -43,6 +44,6 @@ public class TokenService {
                 .subject(authentication.getName())
                 .claim("roles",scope)
                 .build();
-        return jwtEncoder.encode(JwtEncoderParameters.from(claimsSet)).getTokenValue();
+        return new TokenDTO(jwtEncoder.encode(JwtEncoderParameters.from(claimsSet)).getTokenValue(),expirationDate.toInstant());
     }
 }

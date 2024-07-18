@@ -1,5 +1,6 @@
 package com.loco.demo.DTO.AuthenDTO;
 
+import com.loco.demo.DTO.JSON.TokenDTO;
 import com.loco.demo.DTO.Status.StatusAuthenticationRegister;
 import com.loco.demo.utils.Converters.UserMinimalConverter;
 import lombok.Getter;
@@ -12,9 +13,9 @@ public class AdvanceLoginResponseDTO {
     private String code;
     private StatusAuthenticationRegister status;
     private UserMinimalConverter user_detail;
-    private String access_token;
+    private TokenDTO access_token;
 
-    public AdvanceLoginResponseDTO(String message, String code, StatusAuthenticationRegister status, UserMinimalConverter user_detail, String access_token) {
+    public AdvanceLoginResponseDTO(String message, String code, StatusAuthenticationRegister status, UserMinimalConverter user_detail, TokenDTO access_token) {
         this.message = message;
         this.code = code;
         this.status = status;
@@ -61,7 +62,7 @@ public class AdvanceLoginResponseDTO {
         this.user_detail = user_detail;
     }
 
-    public void setAccess_token(String access_token) {
+    public void setAccess_token(TokenDTO access_token) {
         this.access_token = access_token;
     }
 }
