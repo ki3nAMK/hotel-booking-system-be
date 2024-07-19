@@ -2,24 +2,25 @@ package com.loco.demo.DTO.AuthenDTO;
 
 import com.loco.demo.AuthenModel.User;
 import com.loco.demo.DTO.JSON.TokenDTO;
+import com.loco.demo.utils.Converters.SecureUser;
 
 public class LoginResponseDTO {
-    private User user ;
+    private SecureUser user ;
     private TokenDTO jwt ;
 
     public LoginResponseDTO() {
     }
 
     public LoginResponseDTO(User user, TokenDTO jwt) {
-        this.user = user;
+        this.user = new SecureUser(user);
         this.jwt = jwt;
     }
 
-    public User getUser() {
+    public SecureUser getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(SecureUser user) {
         this.user = user;
     }
 

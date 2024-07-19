@@ -9,6 +9,7 @@ import com.loco.demo.DTO.Status.StatusAuthenticationRegister;
 import com.loco.demo.DTO.Status.StatusResponseAPI;
 import com.loco.demo.services.EmailService.EmailService;
 import com.loco.demo.services.authenService.AuthenticationService;
+import com.loco.demo.utils.Converters.SecureUser;
 import com.loco.demo.utils.Converters.UserMinimalConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -111,7 +112,7 @@ public class AuthenticationController {
     @RequestMapping(method = RequestMethod.POST,value = "/client/googleLogin")
     public AdvanceLoginResponseDTO googleLogin(@RequestBody GoogleLoginDTO googleLoginDTO) {
         LoginResponseDTO loginResponseDTO = authenticationService.handleLoginAndRegisterWithGoogleAccount(googleLoginDTO);
-        User userGetFromGoogleLoginService = loginResponseDTO.getUser();
+        SecureUser userGetFromGoogleLoginService = loginResponseDTO.getUser();
         UserMinimalConverter userMinimalConverter = new UserMinimalConverter(
                 userGetFromGoogleLoginService.getEmail(),
                 userGetFromGoogleLoginService.getName(),
