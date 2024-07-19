@@ -1,9 +1,13 @@
 package com.loco.demo.utils.Converters;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.loco.demo.AuthenModel.Role;
+import com.loco.demo.AuthenModel.User;
 
 import java.util.*;
 
+@JsonInclude(Include.NON_NULL)
 public class SecureUser{
     private String userId;
     private String avatar;
@@ -19,23 +23,21 @@ public class SecureUser{
     private Boolean onlineStatus;
     private Date lastOnline;
     private Set<Role> authorities;
-    public SecureUser(String userId, String avatar, String username, String name, Byte gender, Date birthday,
-            String email, String phoneNumber, String sumary, String location, Role role, Boolean onlineStatus,
-            Date lastOnline, Set<Role> authorities) {
-        this.userId = userId;
-        this.avatar = avatar;
-        this.username = username;
-        this.name = name;
-        this.gender = gender;
-        this.birthday = birthday;
-        this.email = email;
-        this.phoneNumber = phoneNumber;
-        this.sumary = sumary;
-        this.location = location;
-        this.role = role;
-        this.onlineStatus = onlineStatus;
-        this.lastOnline = lastOnline;
-        this.authorities = authorities;
+    public SecureUser(User user) {
+        this.userId = user.getUserId();
+        this.avatar = user.getAvatar();
+        this.username = user.getUsername();
+        this.name = user.getName();
+        this.gender = user.getGender();
+        this.birthday = user.getBirthday();
+        this.email = user.getEmail();
+        this.phoneNumber = user.getPhoneNumber();
+        this.sumary = user.getSumary();
+        this.location = user.getLocation();
+        this.role = user.getRole();
+        this.onlineStatus = user.getOnlineStatus();
+        this.lastOnline = user.getLastOnline();
+        this.authorities = (Set<Role>) user.getAuthorities();
     }
     public String getUserId() {
         return userId;
