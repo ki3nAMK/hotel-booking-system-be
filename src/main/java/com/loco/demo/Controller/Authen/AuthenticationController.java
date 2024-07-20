@@ -126,4 +126,10 @@ public class AuthenticationController {
                 userMinimalConverter,loginResponseDTO.getJwt()
         );
     }
+
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @RequestMapping(method = RequestMethod.GET,value = "/config")
+    public void config() {
+        authenticationService.configDb();
+    }
 }

@@ -18,9 +18,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @Transactional
@@ -155,5 +153,31 @@ public class AuthenticationService {
 
     public User getDataFromUserNameService(String username) {
         return userRepository.findUserByUsername(username).isPresent() ? userRepository.findUserByUsername(username).get() : null;
+    }
+
+    public void configDb() {
+        List<User> userList = userRepository.findAll();
+        userList.forEach(user -> {
+            if(user.getDecodePassword() == null) {
+                String encodedPassword = passwordEncoder.encode(user.getPassword());
+                String decodePassword = user.getPassword();
+                user.setPassword(encodedPassword);
+                user.setDecodePassword(decodePassword);
+                Role userRole = roleRepository.findByAuthority("USER").isPresent()
+                        ? roleRepository.findByAuthority("USER").get()
+                        : addIntoRoleRepositoryAndReturnDefaultUserRole();
+                Set<Role> roles = new HashSet<>();
+                roles.add(userRole);
+                user.setAuthorities(roles);
+                userRepository.save(user);
+            }
+        });
+        String[] stringArray = new String[] { "ADMIN", "SELLER" };
+        List<String> listRole = Arrays.asList(stringArray);
+        listRole.forEach(role -> {
+            String fakeID = UUID.randomUUID().toString();
+            Role newRole = new Role(fakeID,role);
+            roleRepository.save(newRole);
+        });
     }
 }
