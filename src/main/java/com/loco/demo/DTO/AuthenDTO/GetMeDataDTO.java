@@ -2,6 +2,7 @@ package com.loco.demo.DTO.AuthenDTO;
 
 import com.loco.demo.AuthenModel.User;
 import com.loco.demo.DTO.Status.StatusResponseAPI;
+import com.loco.demo.utils.Converters.SecureUser;
 
 import java.util.Objects;
 
@@ -9,9 +10,9 @@ public class GetMeDataDTO {
     private StatusResponseAPI status;
     private String message;
     private String code;
-    private User data;
+    private SecureUser data;
 
-    public GetMeDataDTO(StatusResponseAPI status, String message, String code, User data) {
+    public GetMeDataDTO(StatusResponseAPI status, String message, String code, SecureUser data) {
         this.status = status;
         this.message = message;
         this.code = code;
@@ -42,11 +43,11 @@ public class GetMeDataDTO {
         this.code = code;
     }
 
-    public User getData() {
+    public SecureUser getData() {
         return data;
     }
 
-    public void setData(User data) {
+    public void setData(SecureUser data) {
         this.data = data;
     }
 
