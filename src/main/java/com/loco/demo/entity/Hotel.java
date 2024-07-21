@@ -1,9 +1,13 @@
 package com.loco.demo.entity;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.loco.demo.AuthenModel.User;
+import com.loco.demo.utils.Converters.SecureUser;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -69,8 +73,8 @@ public class Hotel {
     private HotelRating rating;
     @Column(name = "capacity")
     private Integer capacity;
-    @Column(name = "type", length = 255)
-    private String type;
+    @Column(name = "type")
+    private Integer type;
     @Column(name = "status")
     private Byte status;
     @Lob
@@ -79,9 +83,28 @@ public class Hotel {
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "location_id")
     private Location locationId;
+    @Column(name = "slug", length = 255)
+    private String slug;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "wish_list_with_hotel", joinColumns = { @JoinColumn(name = "hotel_id") }, inverseJoinColumns = {
             @JoinColumn(name = "wish_list_id") })
+    @JsonIgnore
     private List<WishList> wishLists;
+
+    public List<String> getImgList() {
+        return this.imgList != null ? Arrays.asList(this.imgList.split("\\*")) : Collections.emptyList();
+    }
+
+    public List<String> getAmenities() {
+        return Arrays.asList(this.amenities.split("\\*"));
+    }
+
+    public List<String> getSafety() {
+        return Arrays.asList(this.safety.split("\\*"));
+    }
+
+    public SecureUser getSeller() {
+        return new SecureUser(this.seller);
+    }
 }

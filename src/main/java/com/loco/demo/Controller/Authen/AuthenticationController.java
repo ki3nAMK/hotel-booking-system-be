@@ -52,7 +52,7 @@ public class AuthenticationController {
                     , StatusAuthenticationRegister.IS_EXIST,null);
         }
         return new SchemaResponseStatusAuthenticationRegister(message,"001"
-                ,StatusAuthenticationRegister.ACCEPTED,applicationUser) ;
+                ,StatusAuthenticationRegister.ACCEPTED,new SecureUser(applicationUser)) ;
     }
 
     @ResponseStatus(HttpStatus.ACCEPTED)
@@ -87,7 +87,7 @@ public class AuthenticationController {
             if (getUserFromDB == null) {
                 return new GetMeDataDTO(StatusResponseAPI.NOT_EXIST,"Username fetched from token is not exist","000",null);
             } else {
-                return new GetMeDataDTO(StatusResponseAPI.ACCEPT,"Success !","001",getUserFromDB);
+                return new GetMeDataDTO(StatusResponseAPI.ACCEPT,"Success !","001",new SecureUser(getUserFromDB));
             }
         } catch (Exception exception) {
             String messageError = exception.getMessage();

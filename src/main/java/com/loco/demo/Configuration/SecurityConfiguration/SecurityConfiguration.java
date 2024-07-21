@@ -111,6 +111,7 @@ public class SecurityConfiguration {
                         .requestMatchers(AntPathRequestMatcher.antMatcher("/admin/**")).hasRole("ADMIN")
                         .requestMatchers(AntPathRequestMatcher.antMatcher("/error/**")).permitAll()
                         .requestMatchers(AntPathRequestMatcher.antMatcher("/api/v1/authen/**")).permitAll()
+                        .requestMatchers(AntPathRequestMatcher.antMatcher("/hotel/**")).permitAll()
                         .anyRequest().authenticated())
                 .httpBasic(httpBasic -> httpBasic.authenticationEntryPoint(this.authenticationEntryPointConfig))
                 .formLogin(Customizer.withDefaults())
