@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import org.springframework.security.core.GrantedAuthority;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.List;
 import java.util.Objects;
@@ -24,6 +25,7 @@ public class Role implements GrantedAuthority {
     @Getter
     @Setter
     @OneToMany(mappedBy = "role",fetch = FetchType.EAGER,cascade = CascadeType.MERGE)
+    @JsonIgnore
     private List<User> users;
 
     public Role() {

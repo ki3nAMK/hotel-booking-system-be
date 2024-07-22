@@ -4,9 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.loco.demo.DTO.JSON.HotelResponse;
+import com.loco.demo.DTO.JSON.ListResponse;
 import com.loco.demo.entity.Hotel;
 import com.loco.demo.entity.HotelDetail;
 import com.loco.demo.repository.HotelRepo.HotelRepo;
@@ -21,19 +22,24 @@ public class HotelServiceImpl implements HotelService {
     }
 
     @Override
-    public HotelResponse getListByCriteria(int page, int limit, Integer type, String name, Integer minPrice,
+    public ListResponse<Hotel> getListByCriteria(int page, int limit, Integer type, String name, Integer minPrice,
             Integer maxPrice, Integer bed,
             Integer bathroom, Integer car, Integer pet, String amenity, String safety) {
         Pageable pageable = PageRequest.of(page, limit);
-        Page<Hotel> pageHotel=hotelRepo.findHotelsByCriteria(type, name, minPrice, maxPrice, bed,
+        Page<Hotel> pageHotel = hotelRepo.findHotelsByCriteria(type, name, minPrice, maxPrice, bed,
                 bathroom, car, pet, amenity, safety, pageable);
-        return new HotelResponse(pageHotel.getContent(), pageHotel.getTotalElements());
+        return new ListResponse<Hotel>(pageHotel.getContent(), pageHotel.getTotalElements());
     }
 
     @Override
     public HotelDetail getDetailByHotelSlug(String slug) {
-        HotelDetail hotelDetail=hotelRepo.findHotelDetailByHotelSlug(slug);
+        HotelDetail hotelDetail = hotelRepo.findHotelDetailByHotelSlug(slug);
         return hotelDetail;
     }
 
+    @Override
+    public Hotel getHotelById(String id) {
+        return hotelRepo.findById(id)
+                .orElseThrow(() -> new UsernameNotFoundException("NO HOTEL FOUND IN DATABASE !!!"));
+    }
 }
