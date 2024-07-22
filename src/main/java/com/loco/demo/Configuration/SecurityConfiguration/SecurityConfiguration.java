@@ -107,11 +107,11 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity.authorizeHttpRequests(auth -> auth
-                        // .requestMatchers(AntPathRequestMatcher.antMatcher("/api/v1/hotel/**")).hasAnyRole("ADMIN","USER")
                         .requestMatchers(AntPathRequestMatcher.antMatcher("/admin/**")).hasRole("ADMIN")
                         .requestMatchers(AntPathRequestMatcher.antMatcher("/error/**")).permitAll()
                         .requestMatchers(AntPathRequestMatcher.antMatcher("/api/v1/authen/**")).permitAll()
                         .requestMatchers(AntPathRequestMatcher.antMatcher("/api/v1/hotel/**")).permitAll()
+                        .requestMatchers(AntPathRequestMatcher.antMatcher("/api/v1/health/**")).permitAll()
                         .anyRequest().authenticated())
                 .httpBasic(httpBasic -> httpBasic.authenticationEntryPoint(this.authenticationEntryPointConfig))
                 .formLogin(Customizer.withDefaults())
