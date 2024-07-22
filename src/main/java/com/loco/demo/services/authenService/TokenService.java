@@ -31,7 +31,7 @@ public class TokenService {
         Date currentDate = new Date();
         Calendar expirationCalendar = Calendar.getInstance();
         expirationCalendar.setTime(currentDate);
-        expirationCalendar.add(Calendar.HOUR_OF_DAY, 2);
+        expirationCalendar.add(Calendar.HOUR_OF_DAY, 48);
         Date expirationDate = expirationCalendar.getTime();
         Instant instant = Instant.now();
         String scope = authentication.getAuthorities().stream()
