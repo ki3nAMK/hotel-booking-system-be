@@ -47,7 +47,9 @@ public class SecurityConfiguration {
     private final BearerTokenEntryPoint bearerTokenEntryPoint;
     private final BearerTokenHandlerDenied bearerTokenHandlerDenied;
 
-    public SecurityConfiguration(RSAKeyProperties rsaKeyProperties, AuthenticationEntryPointConfig authenticationEntryPointConfig, BearerTokenEntryPoint bearerTokenEntryPoint, BearerTokenHandlerDenied bearerTokenHandlerDenied) {
+    public SecurityConfiguration(RSAKeyProperties rsaKeyProperties,
+            AuthenticationEntryPointConfig authenticationEntryPointConfig, BearerTokenEntryPoint bearerTokenEntryPoint,
+            BearerTokenHandlerDenied bearerTokenHandlerDenied) {
         this.rsaKeyProperties = rsaKeyProperties;
         this.authenticationEntryPointConfig = authenticationEntryPointConfig;
         this.bearerTokenEntryPoint = bearerTokenEntryPoint;
@@ -56,9 +58,9 @@ public class SecurityConfiguration {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        Map<String,PasswordEncoder> encoders = new HashMap<String,PasswordEncoder>();
-        encoders.put("bcrypt",new BCryptPasswordEncoder());
-        return new DelegatingPasswordEncoder("bcrypt",encoders);
+        Map<String, PasswordEncoder> encoders = new HashMap<String, PasswordEncoder>();
+        encoders.put("bcrypt", new BCryptPasswordEncoder());
+        return new DelegatingPasswordEncoder("bcrypt", encoders);
     }
 
     @Bean
@@ -82,7 +84,7 @@ public class SecurityConfiguration {
     }
 
     @Bean
-    public JwtAuthenticationConverter jwtAuthenticationConverter(){
+    public JwtAuthenticationConverter jwtAuthenticationConverter() {
         JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
         jwtGrantedAuthoritiesConverter.setAuthorityPrefix("ROLE_");
         jwtGrantedAuthoritiesConverter.setAuthoritiesClaimName("roles");
@@ -98,8 +100,7 @@ public class SecurityConfiguration {
         configuration.addAllowedMethod("*");
         configuration.addAllowedHeader("*");
         configuration.setAllowCredentials(true);
-        UrlBasedCorsConfigurationSource source = new
-                UrlBasedCorsConfigurationSource();
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
@@ -107,12 +108,14 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity.authorizeHttpRequests(auth -> auth
-                        .requestMatchers(AntPathRequestMatcher.antMatcher("/admin/**")).hasRole("ADMIN")
-                        .requestMatchers(AntPathRequestMatcher.antMatcher("/error/**")).permitAll()
-                        .requestMatchers(AntPathRequestMatcher.antMatcher("/api/v1/authen/**")).permitAll()
-                        .requestMatchers(AntPathRequestMatcher.antMatcher("/api/v1/hotel/**")).permitAll()
-                        .requestMatchers(AntPathRequestMatcher.antMatcher("/api/v1/health/**")).permitAll()
-                        .anyRequest().authenticated())
+                .requestMatchers(AntPathRequestMatcher.antMatcher("/admin/**")).hasRole("ADMIN")
+                .requestMatchers(AntPathRequestMatcher.antMatcher("/error/**")).permitAll()
+                .requestMatchers(AntPathRequestMatcher.antMatcher("/api/v1/authen/**")).permitAll()
+                .requestMatchers(AntPathRequestMatcher.antMatcher("/api/v1/hotel/**")).permitAll()
+                .requestMatchers(AntPathRequestMatcher.antMatcher("/api/v1/health/**")).permitAll()
+                .requestMatchers(AntPathRequestMatcher.antMatcher("/api/v1/comment/**")).permitAll()
+                .requestMatchers(AntPathRequestMatcher.antMatcher("/api/v1/service/**")).permitAll()
+                .anyRequest().authenticated())
                 .httpBasic(httpBasic -> httpBasic.authenticationEntryPoint(this.authenticationEntryPointConfig))
                 .formLogin(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)

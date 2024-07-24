@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.loco.demo.AuthenModel.Role;
 import com.loco.demo.AuthenModel.User;
+import com.loco.demo.entity.Location;
 
 import java.util.*;
 
@@ -23,6 +24,7 @@ public class SecureUser{
     private Boolean onlineStatus;
     private Date lastOnline;
     private Set<Role> authorities;
+    private Location address;
     public SecureUser(User user) {
         this.userId = user.getUserId();
         this.avatar = user.getAvatar();
@@ -38,6 +40,7 @@ public class SecureUser{
         this.onlineStatus = user.getOnlineStatus();
         this.lastOnline = user.getLastOnline();
         this.authorities = (Set<Role>) user.getAuthorities();
+        this.address=user.getAddress();
     }
     public String getUserId() {
         return userId;
@@ -123,6 +126,10 @@ public class SecureUser{
     public void setAuthorities(Set<Role> authorities) {
         this.authorities = authorities;
     }
-
-    
+    public Location getAddress() {
+        return address;
+    }
+    public void setAddress(Location address) {
+        this.address = address;
+    }
 }

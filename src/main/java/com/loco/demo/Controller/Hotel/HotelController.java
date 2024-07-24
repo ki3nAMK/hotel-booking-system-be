@@ -8,7 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.loco.demo.DTO.JSON.HotelResponse;
+import com.loco.demo.DTO.JSON.ListResponse;
+import com.loco.demo.entity.Hotel;
 import com.loco.demo.entity.HotelDetail;
 import com.loco.demo.services.hotelService.HotelService;
 
@@ -24,7 +25,7 @@ public class HotelController {
     }
 
     @GetMapping()
-    public HotelResponse getListByCriteria(@RequestParam(required = false) Integer type,
+    public ListResponse<Hotel> getListByCriteria(@RequestParam(required = false) Integer type,
             @RequestParam(required = false) String name, @RequestParam(required = false) Integer minPrice,
             @RequestParam(required = false) Integer maxPrice, @RequestParam(required = false) Integer bed,
             @RequestParam(required = false) Integer bathroom, @RequestParam(required = false) Integer car,
@@ -33,12 +34,12 @@ public class HotelController {
             @RequestParam(defaultValue = "10") int limit,
             @RequestParam(required = false) String amenity,
             @RequestParam(required = false) String safety) {
-        return hotelService.getListByCriteria(page-1, limit, type, name, minPrice, maxPrice, bed, bathroom, car, pet,
+        return hotelService.getListByCriteria(page - 1, limit, type, name, minPrice, maxPrice, bed, bathroom, car, pet,
                 amenity, safety);
     }
 
     @GetMapping("/{slug}")
-    public HotelDetail getDetailListByHoelSlug(@PathVariable String slug){
+    public HotelDetail getDetailListByHoelSlug(@PathVariable String slug) {
         return hotelService.getDetailByHotelSlug(slug);
     }
 }
