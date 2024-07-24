@@ -1,5 +1,6 @@
 package com.loco.demo.AuthenModel;
 
+import com.loco.demo.entity.Location;
 import com.loco.demo.utils.Constants.Const;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -49,6 +50,10 @@ public class User implements UserDetails {
             @JoinColumn(name = "role_id") })
     private Set<Role> authorities;
 
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "address_id")
+    private Location address;
+
     public User() {
     }
 
@@ -85,7 +90,7 @@ public class User implements UserDetails {
 
     public User(String userId, String avatar, String username, String name, Byte gender, Date birthday, String email,
             String phoneNumber, String password, String decodePassword, String sumary, String location, Role role,
-            Boolean onlineStatus, Date lastOnline, Set<Role> authorities) {
+            Boolean onlineStatus, Date lastOnline, Set<Role> authorities, Location address) {
         this.userId = userId;
         this.avatar = avatar;
         this.username = username;
@@ -102,6 +107,7 @@ public class User implements UserDetails {
         this.onlineStatus = onlineStatus;
         this.lastOnline = lastOnline;
         this.authorities = authorities;
+        this.address = address;
     }
 
     @Override
@@ -253,5 +259,13 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public Location getAddress() {
+        return address;
+    }
+
+    public void setAddress(Location address) {
+        this.address = address;
     }
 }

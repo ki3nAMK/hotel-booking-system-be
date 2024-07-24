@@ -3,6 +3,8 @@ package com.loco.demo.entity;
 import java.util.Date;
 
 import com.loco.demo.AuthenModel.User;
+import com.loco.demo.DTO.JSON.HotelDTO;
+import com.loco.demo.utils.Converters.SecureUser;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -40,4 +42,12 @@ public class Comment {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "hotel_id")
     private Hotel hotel;
+
+    public SecureUser getUser(){
+        return new SecureUser(this.user);
+    }
+
+    public HotelDTO getHotel(){
+        return new HotelDTO(this.hotel);
+    }
 }

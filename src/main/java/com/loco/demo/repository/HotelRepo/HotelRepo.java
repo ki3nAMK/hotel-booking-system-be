@@ -1,5 +1,7 @@
 package com.loco.demo.repository.HotelRepo;
 
+import java.util.Optional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -8,7 +10,6 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.loco.demo.entity.Hotel;
-import com.loco.demo.entity.HotelDetail;
 
 @Repository
 public interface HotelRepo extends JpaRepository<Hotel, String> {
@@ -35,6 +36,6 @@ public interface HotelRepo extends JpaRepository<Hotel, String> {
                         @Param("safety") String safety,
                         Pageable pageable);
 
-        @Query("SELECT h.detail FROM Hotel h WHERE ( :slug IS NULL OR h.slug= :slug )")
-        public HotelDetail findHotelDetailByHotelSlug(String slug);
+        @Query("SELECT h FROM Hotel h WHERE ( :slug IS NULL OR h.slug= :slug )")
+        public Optional<Hotel> findHotelDetailByHotelSlug(String slug);
 }

@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.loco.demo.AuthenModel.User;
 import com.loco.demo.utils.Converters.SecureUser;
 
@@ -14,9 +13,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
 import jakarta.persistence.Lob;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -85,13 +82,7 @@ public class Hotel {
     private Location locationId;
     @Column(name = "slug", length = 255)
     private String slug;
-
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "wish_list_with_hotel", joinColumns = { @JoinColumn(name = "hotel_id") }, inverseJoinColumns = {
-            @JoinColumn(name = "wish_list_id") })
-    @JsonIgnore
-    private List<WishList> wishLists;
-
+    
     public List<String> getImgList() {
         return this.imgList != null ? Arrays.asList(this.imgList.split("\\*")) : Collections.emptyList();
     }
