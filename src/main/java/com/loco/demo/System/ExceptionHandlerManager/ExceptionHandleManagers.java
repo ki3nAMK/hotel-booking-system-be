@@ -11,6 +11,7 @@ import org.springframework.security.authentication.InsufficientAuthenticationExc
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.oauth2.server.resource.InvalidBearerTokenException;
 import org.springframework.web.servlet.NoHandlerFoundException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
@@ -64,5 +65,13 @@ public class ExceptionHandleManagers {
     ExceptionResponseHandler handleInternalServerError(Exception ex) {
         return new ExceptionResponseHandler(StatusResponseAPI.INTERNAL_SERVER_ERROR, "000",
                 "A server internal error occurs.", ex.getMessage());
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    ExceptionResponseHandler handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
+        return new ExceptionResponseHandler(StatusResponseAPI.FAILED, "000",
+                "An user error occurs",
+                ex.getFieldError() != null ? ex.getFieldError().getDefaultMessage() : ex.getMessage());
     }
 }

@@ -1,13 +1,12 @@
 package com.loco.demo.Controller.Service;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.loco.demo.DTO.JSON.ListResponse;
 import com.loco.demo.entity.Service;
 import com.loco.demo.services.serviceService.ServiceService;
 
@@ -23,7 +22,7 @@ public class ServiceController {
     }
 
     @GetMapping
-    public List<Service> findAll(){
+    public ListResponse<Service> findAll(){
         return serviceService.findAll();
     }
 }

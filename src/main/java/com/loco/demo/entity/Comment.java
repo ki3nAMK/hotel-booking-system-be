@@ -3,6 +3,7 @@ package com.loco.demo.entity;
 import java.util.Date;
 
 import com.loco.demo.AuthenModel.User;
+import com.loco.demo.DTO.JSON.HotelDTO;
 import com.loco.demo.utils.Converters.SecureUser;
 
 import jakarta.persistence.Column;
@@ -44,5 +45,9 @@ public class Comment {
 
     public SecureUser getUser(){
         return new SecureUser(this.user);
+    }
+
+    public HotelDTO getHotel(){
+        return new HotelDTO(this.hotel);
     }
 }

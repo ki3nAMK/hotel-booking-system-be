@@ -3,11 +3,12 @@ package com.loco.demo.services.serviceService;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
+import com.loco.demo.DTO.JSON.ListResponse;
+import com.loco.demo.entity.Service;
 import com.loco.demo.repository.Service.ServiceRepo;
 
-@Service
+@org.springframework.stereotype.Service
 public class ServiceServiceImpl implements ServiceService{
     private ServiceRepo serviceRepo;
 
@@ -17,7 +18,8 @@ public class ServiceServiceImpl implements ServiceService{
     }
 
     @Override
-    public List<com.loco.demo.entity.Service> findAll() {
-        return serviceRepo.findAll();
+    public ListResponse<Service> findAll() {
+        List<Service> list=serviceRepo.findAll();
+        return new ListResponse<Service>(list, list.size()) ;
     }
 }

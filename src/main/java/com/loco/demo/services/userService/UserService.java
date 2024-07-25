@@ -8,4 +8,5 @@ public interface UserService {
     public SecureUser updateUserPhone(String id, UpdateUserForm updateUserForm);
     public SecureUser updateUserLocation(String id, UpdateUserForm updateUserForm);
     public SecureUser updateUserEmail(String id, UpdateUserForm updateUserForm);
+    public boolean checkIdAndRole(String id);
 }

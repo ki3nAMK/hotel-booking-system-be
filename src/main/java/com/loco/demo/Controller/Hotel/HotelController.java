@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.loco.demo.DTO.JSON.HotelDTO;
 import com.loco.demo.DTO.JSON.ListResponse;
 import com.loco.demo.entity.Hotel;
-import com.loco.demo.entity.HotelDetail;
 import com.loco.demo.services.hotelService.HotelService;
 
 @RequestMapping("/api/v1/hotel")
@@ -25,7 +25,7 @@ public class HotelController {
     }
 
     @GetMapping()
-    public ListResponse<Hotel> getListByCriteria(@RequestParam(required = false) Integer type,
+    public ListResponse<HotelDTO> getListByCriteria(@RequestParam(required = false) Integer type,
             @RequestParam(required = false) String name, @RequestParam(required = false) Integer minPrice,
             @RequestParam(required = false) Integer maxPrice, @RequestParam(required = false) Integer bed,
             @RequestParam(required = false) Integer bathroom, @RequestParam(required = false) Integer car,
@@ -39,7 +39,7 @@ public class HotelController {
     }
 
     @GetMapping("/{slug}")
-    public HotelDetail getDetailListByHoelSlug(@PathVariable String slug) {
+    public Hotel getDetailListByHoelSlug(@PathVariable String slug) {
         return hotelService.getDetailByHotelSlug(slug);
     }
 }
