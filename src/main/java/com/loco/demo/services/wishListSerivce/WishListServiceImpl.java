@@ -4,29 +4,37 @@ import java.util.Date;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.loco.demo.AuthenModel.User;
+import com.loco.demo.DTO.JSON.ListResponse;
 import com.loco.demo.entity.Hotel;
 import com.loco.demo.entity.WishList;
 import com.loco.demo.repository.WishList.WishListRepo;
 import com.loco.demo.services.authenService.AuthenticationService;
 import com.loco.demo.services.hotelService.HotelService;
+import com.loco.demo.services.userService.UserService;
 
 @Service
 public class WishListServiceImpl implements WishListService {
     private WishListRepo wishListRepo;
     private AuthenticationService authenticationService;
     private HotelService hotelService;
+    private UserService userService;
 
     @Autowired
     public WishListServiceImpl(WishListRepo wishListRepo, AuthenticationService authenticationService,
-            HotelService hotelService) {
+            HotelService hotelService, UserService userService) {
         this.wishListRepo = wishListRepo;
         this.authenticationService = authenticationService;
         this.hotelService = hotelService;
+        this.userService = userService;
     }
 
     @Override
@@ -39,5 +47,22 @@ public class WishListServiceImpl implements WishListService {
                 new Date(System.currentTimeMillis()));
         wishListRepo.save(wishList);
         return wishList;
+    }
+
+    @Override
+    public ListResponse<WishList> getWishList(int page, int limit) {
+        Pageable pageable = PageRequest.of(page, limit);
+        Page<WishList> pageWishList = wishListRepo.findAll(pageable);
+        return new ListResponse<WishList>(pageWishList.getContent(), pageWishList.getTotalElements());
+    }
+
+    @Override
+    public void deleteWishList(String id) {
+        WishList wishList = wishListRepo.findByHotelId(id)
+                .orElseThrow(() -> new UsernameNotFoundException("This hotel doesn't have any wishlist"));
+        if(userService.checkIdAndRole(wishList.getUser().getUserId())){
+            wishListRepo.deleteById(wishList.getId());
+        } 
+        else throw new RuntimeException("Not your own wishlist!!");
     }
 }
