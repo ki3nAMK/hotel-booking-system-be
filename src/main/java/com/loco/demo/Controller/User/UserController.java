@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.loco.demo.DTO.JSON.ExceptionResponseHandler;
 import com.loco.demo.DTO.JSON.ListResponse;
 import com.loco.demo.DTO.JSON.UpdateUserForm;
+import com.loco.demo.DTO.Status.StatusResponseAPI;
 import com.loco.demo.entity.WishList;
 import com.loco.demo.services.userService.UserService;
 import com.loco.demo.services.wishListSerivce.WishListService;
@@ -67,8 +69,8 @@ public class UserController {
     }
 
     @DeleteMapping("wishlist/{id}")
-    public ResponseEntity<String> deleteWishList(@PathVariable String id){
+    public ResponseEntity<ExceptionResponseHandler> deleteWishList(@PathVariable String id){
         wishListService.deleteWishList(id);
-        return ResponseEntity.ok().body("Xóa thành công");
+        return ResponseEntity.ok().body(new ExceptionResponseHandler(StatusResponseAPI.OK, "000", "Successful deletion", ""));
     }
 }

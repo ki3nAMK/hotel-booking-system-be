@@ -40,13 +40,17 @@ public class WishListServiceImpl implements WishListService {
     @Override
     public WishList saveWishList(String id) {
         Hotel hotel = hotelService.getHotelById(id);
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String usernameFromToken = authentication.getName();
-        User getUserFromDB = authenticationService.getDataFromUserNameService(usernameFromToken);
-        WishList wishList = new WishList(UUID.randomUUID().toString(), getUserFromDB, hotel,
-                new Date(System.currentTimeMillis()));
-        wishListRepo.save(wishList);
-        return wishList;
+        System.out.println(wishListRepo.existsByHotelId(id));
+        if(!wishListRepo.existsByHotelId(id)){
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String usernameFromToken = authentication.getName();
+            User getUserFromDB = authenticationService.getDataFromUserNameService(usernameFromToken);
+            WishList wishList = new WishList(UUID.randomUUID().toString(), getUserFromDB, hotel,
+                    new Date(System.currentTimeMillis()));
+            wishListRepo.save(wishList);
+            return wishList;
+        }
+        else throw new RuntimeException("This hotel already has wishlist");
     }
 
     @Override
