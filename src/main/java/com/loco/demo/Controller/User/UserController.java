@@ -20,6 +20,7 @@ import com.loco.demo.DTO.JSON.UpdateUserForm;
 import com.loco.demo.DTO.Status.StatusResponseAPI;
 import com.loco.demo.entity.Reservation;
 import com.loco.demo.entity.WishList;
+import com.loco.demo.services.reservationService.ReservationService;
 import com.loco.demo.services.userService.UserService;
 import com.loco.demo.services.wishListSerivce.WishListService;
 import com.loco.demo.utils.Converters.SecureUser;
@@ -32,11 +33,14 @@ import jakarta.validation.Valid;
 public class UserController {
     private UserService userService;
     private WishListService wishListService;
+    private ReservationService reservationService;
 
     @Autowired
-    public UserController(UserService userService, WishListService wishListService) {
+    public UserController(UserService userService, WishListService wishListService,
+            ReservationService reservationService) {
         this.userService = userService;
         this.wishListService = wishListService;
+        this.reservationService = reservationService;
     }
 
     @PutMapping("/{id}")
@@ -71,12 +75,13 @@ public class UserController {
     }
 
     @DeleteMapping("wishlist/{id}")
-    public ResponseEntity<ExceptionResponseHandler> deleteWishList(@PathVariable String id){
+    public ResponseEntity<ExceptionResponseHandler> deleteWishList(@PathVariable String id) {
         wishListService.deleteWishList(id);
-        return ResponseEntity.ok().body(new ExceptionResponseHandler(StatusResponseAPI.OK, "000", "Successful deletion", ""));
+        return ResponseEntity.ok()
+                .body(new ExceptionResponseHandler(StatusResponseAPI.OK, "000", "Successful deletion", ""));
     }
 
     public Reservation makeReservation(@PathVariable String id,@RequestBody ReservationRequest request){
-        
+        return reservationService.makeReservation(id, request);
     }
 }

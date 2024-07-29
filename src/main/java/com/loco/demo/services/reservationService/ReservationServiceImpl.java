@@ -37,9 +37,9 @@ public class ReservationServiceImpl implements ReservationService{
         reservation.setPrice(reserveHotel.getPrice());
         reservation.setIsPast(false);
         reservation.setStatus((byte)0);
-
         reservation.setOwner(reserveHotel.getOriginalUser());
-
+        reservation.setHotel(reserveHotel);
+        
         return reservationRepo.save(reservation);
     }
 }
