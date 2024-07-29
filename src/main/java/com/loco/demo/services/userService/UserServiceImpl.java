@@ -1,5 +1,6 @@
 package com.loco.demo.services.userService;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,9 +22,9 @@ import com.loco.demo.utils.Converters.SecureUser;
 
 @Service
 public class UserServiceImpl implements UserService {
-    private UserAuthenRepo userAuthenRepo;
-    private AuthenticationService authenticationService;
-    private RoleAuthenRepo roleAuthenRepo;
+    private final UserAuthenRepo userAuthenRepo;
+    private final AuthenticationService authenticationService;
+    private final RoleAuthenRepo roleAuthenRepo;
 
     @Autowired
     public UserServiceImpl(UserAuthenRepo userAuthenRepo, AuthenticationService authenticationService,
@@ -130,4 +131,30 @@ public class UserServiceImpl implements UserService {
         return false;
     }
 
+    public List<User> findOnlineUser(boolean status) {
+        return userAuthenRepo.findUsersByOnlineStatus(status);
+    }
+
+    public User handleChangeStatus(boolean status,String id) {
+        User storedUser = userAuthenRepo.findUserByUserId(id).isPresent()
+                ?  userAuthenRepo.findUserByUserId(id).get()
+                : null;
+        if ( storedUser != null) {
+            storedUser.setOnlineStatus(status);
+            userAuthenRepo.save(storedUser);
+        }
+        return storedUser;
+    }
+
+    public User disconnect(String id) {
+        return handleChangeStatus(false,id);
+    }
+
+    public User connect(String id) {
+        return handleChangeStatus(true,id);
+    }
+
+    public List<User> findAdminAndSeller() {
+        return userAuthenRepo.findUsersByRoleAuthority();
+    }
 }

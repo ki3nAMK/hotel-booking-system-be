@@ -13,18 +13,24 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.UuidGenerator;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Builder
 @Table(name = "chat_room")
 public class ChatRoom {
     @Id
     @Column(length = 50)
     private String id;
+
+    private String chatId;
+
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "sender_id")
     private User senderId;
