@@ -99,4 +99,8 @@ public class Hotel {
     public SecureUser getSeller() {
         return new SecureUser(this.seller);
     }
+
+    public User getOriginalUser(){
+        return this.seller;
+    }
 }

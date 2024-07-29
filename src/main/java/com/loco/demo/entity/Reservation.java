@@ -4,6 +4,7 @@ import java.util.Date;
 
 import com.loco.demo.AuthenModel.User;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -37,7 +38,7 @@ public class Reservation {
     private Integer price;
     @Column(name = "is_past")
     private Boolean isPast;
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER,cascade = CascadeType.PERSIST)
     @JoinColumn(name = "user_id")
     private User user;
     @OneToOne(fetch = FetchType.EAGER)
