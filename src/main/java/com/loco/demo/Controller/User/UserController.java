@@ -81,6 +81,7 @@ public class UserController {
                 .body(new ExceptionResponseHandler(StatusResponseAPI.OK, "000", "Successful deletion", ""));
     }
 
+    @PostMapping("reservation/{id}")
     public Reservation makeReservation(@PathVariable String id,@RequestBody ReservationRequest request){
         return reservationService.makeReservation(id, request);
     }
