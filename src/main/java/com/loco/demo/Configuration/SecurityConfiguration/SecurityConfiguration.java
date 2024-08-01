@@ -115,6 +115,8 @@ public class SecurityConfiguration {
                 .requestMatchers(AntPathRequestMatcher.antMatcher("/api/v1/health/**")).permitAll()
                 .requestMatchers(AntPathRequestMatcher.antMatcher("/api/v1/comment/**")).permitAll()
                 .requestMatchers(AntPathRequestMatcher.antMatcher("/api/v1/service/**")).permitAll()
+                        .requestMatchers(AntPathRequestMatcher.antMatcher("/ws/**")).permitAll()
+                        .requestMatchers(AntPathRequestMatcher.antMatcher("/api/v1/ws/**")).permitAll()
                 .anyRequest().authenticated())
                 .httpBasic(httpBasic -> httpBasic.authenticationEntryPoint(this.authenticationEntryPointConfig))
                 .formLogin(Customizer.withDefaults())
