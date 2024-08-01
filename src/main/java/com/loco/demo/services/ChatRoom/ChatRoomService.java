@@ -43,7 +43,7 @@ public class ChatRoomService {
     }
 
     private String createChat(User sender,User recipient) {
-        String chatId = String.format("%s_%s",sender.getUserId(), sender.getUserId());
+        String chatId = String.format("%s_%s",sender.getUserId(), recipient.getUserId());
         String chatIdRecipient = UUID.randomUUID().toString();
         ChatRoom chatRoomRecipient = ChatRoom.builder()
                 .id(chatIdRecipient)
