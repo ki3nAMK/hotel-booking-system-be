@@ -1,6 +1,7 @@
 package com.loco.demo.Controller.Socket;
 
 import com.loco.demo.AuthenModel.User;
+import com.loco.demo.DTO.JSON.IListResponse;
 import com.loco.demo.DTO.JSON.ListResponse;
 import com.loco.demo.DTO.JSON.Socket.ConnectUserRequest;
 import com.loco.demo.services.userService.UserService;
@@ -44,8 +45,8 @@ public class UserSocketController {
     }
 
     @GetMapping("/api/v1/ws/users")
-    public ListResponse<SecureUser> findConnectedUsers() {
+    public ResponseEntity<List<SecureUser>> findConnectedUsers() {
         List<SecureUser> users = userService.findOnlineUser(true).stream().map(SecureUser::new).toList();
-        return new ListResponse<SecureUser>(users,users.size());
+        return ResponseEntity.ok(users);
     }
 }
