@@ -29,7 +29,6 @@ public class MessageSender {
 
     @MessageMapping("/chat")
     public void processMessage(@Payload MessageRequest messageRequest) {
-        System.out.println(messageRequest);
         Message savedMsg = messageService.save(messageRequest);
         simpMessagingTemplate.convertAndSendToUser(
                 messageRequest.recipientId(), "/queue/messages",
