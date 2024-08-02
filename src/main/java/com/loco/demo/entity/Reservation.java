@@ -52,7 +52,15 @@ public class Reservation {
         return new SecureUser(this.user);
     }
 
+    public User getOriginalUser(){
+        return user;
+    }
+
     public SecureUser getOwner(){
         return new SecureUser(this.owner);
+    }
+
+    public User getOriginalOwner(){
+        return owner;
     }
 }

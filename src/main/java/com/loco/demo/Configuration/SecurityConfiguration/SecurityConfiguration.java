@@ -36,6 +36,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -109,12 +110,15 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity.authorizeHttpRequests(auth -> auth
                 .requestMatchers(AntPathRequestMatcher.antMatcher("/admin/**")).hasRole("ADMIN")
+                .requestMatchers(AntPathRequestMatcher.antMatcher("/api/v1/seller/reservation")).hasRole("SELLER")
                 .requestMatchers(AntPathRequestMatcher.antMatcher("/error/**")).permitAll()
                 .requestMatchers(AntPathRequestMatcher.antMatcher("/api/v1/authen/**")).permitAll()
                 .requestMatchers(AntPathRequestMatcher.antMatcher("/api/v1/hotel/**")).permitAll()
                 .requestMatchers(AntPathRequestMatcher.antMatcher("/api/v1/health/**")).permitAll()
                 .requestMatchers(AntPathRequestMatcher.antMatcher("/api/v1/comment/**")).permitAll()
                 .requestMatchers(AntPathRequestMatcher.antMatcher("/api/v1/service/**")).permitAll()
+                        .requestMatchers(AntPathRequestMatcher.antMatcher("/ws/**")).permitAll()
+                        .requestMatchers(AntPathRequestMatcher.antMatcher("/api/v1/ws/**")).permitAll()
                 .anyRequest().authenticated())
                 .httpBasic(httpBasic -> httpBasic.authenticationEntryPoint(this.authenticationEntryPointConfig))
                 .formLogin(Customizer.withDefaults())

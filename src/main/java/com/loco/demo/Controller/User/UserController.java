@@ -13,9 +13,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.loco.demo.AuthenModel.User;
 import com.loco.demo.DTO.JSON.ExceptionResponseHandler;
 import com.loco.demo.DTO.JSON.ListResponse;
 import com.loco.demo.DTO.JSON.ReservationRequest;
+import com.loco.demo.DTO.JSON.UpdateCancelRservationForm;
 import com.loco.demo.DTO.JSON.UpdateUserForm;
 import com.loco.demo.DTO.Status.StatusResponseAPI;
 import com.loco.demo.entity.Reservation;
@@ -74,15 +76,27 @@ public class UserController {
         return wishListService.getWishList(page - 1, limit);
     }
 
-    @DeleteMapping("wishlist/{id}")
+    @DeleteMapping("/wishlist/{id}")
     public ResponseEntity<ExceptionResponseHandler> deleteWishList(@PathVariable String id) {
         wishListService.deleteWishList(id);
         return ResponseEntity.ok()
                 .body(new ExceptionResponseHandler(StatusResponseAPI.OK, "000", "Successful deletion", ""));
     }
 
-    @PostMapping("reservation/{id}")
-    public Reservation makeReservation(@PathVariable String id,@RequestBody ReservationRequest request){
+    @PostMapping("/reservation/{id}")
+    public Reservation makeReservation(@PathVariable String id, @RequestBody ReservationRequest request) {
         return reservationService.makeReservation(id, request);
+    }
+
+    @GetMapping("/reservation")
+    public ListResponse<Reservation> getListReservation(@RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int limit, @RequestParam(required = false) String type) {
+        User user=userService.getMyInfo();
+        return reservationService.getListReservation(page-1,limit,true,user,type);
+    }
+
+    @PutMapping("/cancel/reservation/{id}")
+    public Reservation cancelReservation(@PathVariable String id, @RequestBody UpdateCancelRservationForm updateCancelRservationForm){
+        return reservationService.cancelReservation(id,updateCancelRservationForm);
     }
 }
