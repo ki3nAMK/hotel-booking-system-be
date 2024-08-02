@@ -30,7 +30,7 @@ public class Hotel {
     @Id
     @Column(name = "id", length = 50)
     private String id;
-    @Column(name = "create_at", columnDefinition = "DATE")
+    @Column(name = "create_at", columnDefinition = "DATETIME")
     private Date createAt;
     @Column(name = "thumbnail", length = 255)
     private String thumbnail;
@@ -100,7 +100,7 @@ public class Hotel {
         return new SecureUser(this.seller);
     }
 
-    public User getOriginalUser(){
+    public User OriginalUser(){
         return this.seller;
     }
 }

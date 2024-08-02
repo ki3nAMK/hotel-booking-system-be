@@ -32,7 +32,7 @@ public class Notification {
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", unique = true)
     private User user;
-    @Column(name = "create_at", columnDefinition = "DATE")
+    @Column(name = "create_at", columnDefinition = "DATETIME")
     private Date createAt;
     @Column(name = "status")
     private Byte status;

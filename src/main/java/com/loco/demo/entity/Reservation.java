@@ -29,9 +29,9 @@ public class Reservation {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "hotel_id")
     private Hotel hotel;
-    @Column(name = "check_in", columnDefinition = "DATE")
+    @Column(name = "check_in", columnDefinition = "DATETIME")
     private Date checkIn;
-    @Column(name = "check_out", columnDefinition = "DATE")
+    @Column(name = "check_out", columnDefinition = "DATETIME")
     private Date checkOut;
     @Column(name = "guest")
     private Integer guest;
@@ -52,7 +52,15 @@ public class Reservation {
         return new SecureUser(this.user);
     }
 
+    public User OriginalUser(){
+        return user;
+    }
+
     public SecureUser getOwner(){
         return new SecureUser(this.owner);
+    }
+
+    public User OriginalOwner(){
+        return owner;
     }
 }
