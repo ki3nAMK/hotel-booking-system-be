@@ -121,16 +121,23 @@ public class UserServiceImpl implements UserService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String usernameFromToken = authentication.getName();
         User getUserFromDB = authenticationService.getDataFromUserNameService(usernameFromToken);
-        Role role=roleAuthenRepo.findByAuthority("ADMIN").get();
-        if(id.equals(getUserFromDB.getUserId())){
+        Role role = roleAuthenRepo.findByAuthority("ADMIN").get();
+        if (id.equals(getUserFromDB.getUserId())) {
             return true;
-        }
-        else if(getUserFromDB.getAuthorities().contains(role)){
+        } else if (getUserFromDB.getAuthorities().contains(role)) {
             return true;
         }
         return false;
     }
 
+    public User getMyInfo() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        User user = userAuthenRepo.findUserByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("NO USERNAME FOUND IN DATABASE !!!"));
+        return user;
+    }
+    
     public List<User> findOnlineUser(boolean status) {
         return userAuthenRepo.findUsersByOnlineStatus(status);
     }

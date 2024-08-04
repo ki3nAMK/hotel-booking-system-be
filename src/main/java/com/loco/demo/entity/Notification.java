@@ -3,6 +3,7 @@ package com.loco.demo.entity;
 import java.util.Date;
 
 import com.loco.demo.AuthenModel.User;
+import com.loco.demo.utils.Converters.SecureUser;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -30,9 +31,13 @@ public class Notification {
     private String content;
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", unique = true)
-    private User userId;
-    @Column(name = "create_at", columnDefinition = "DATE")
+    private User user;
+    @Column(name = "create_at", columnDefinition = "DATETIME")
     private Date createAt;
     @Column(name = "status")
     private Byte status;
+
+    public SecureUser getUser(){
+        return new SecureUser(user);
+    }
 }

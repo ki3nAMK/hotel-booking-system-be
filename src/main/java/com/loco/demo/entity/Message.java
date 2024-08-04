@@ -1,9 +1,5 @@
 package com.loco.demo.entity;
 
-import java.time.LocalDateTime;
-import java.util.Date;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.loco.demo.AuthenModel.User;
 
 import jakarta.persistence.Column;
@@ -12,7 +8,6 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -43,6 +38,6 @@ public class Message {
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "recipient_id")
     private User recipientId;
-    @Column(name = "time_stamp", columnDefinition = "DATE")
+    @Column(name = "time_stamp", columnDefinition = "DATETIME")
     private String timeStamp;
 }

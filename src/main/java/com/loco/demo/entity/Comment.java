@@ -31,7 +31,7 @@ public class Comment {
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;
-    @Column(name = "create_at", columnDefinition = "DATE")
+    @Column(name = "create_at", columnDefinition = "DATETIME")
     private Date createAt;
     @Lob
     @Column(name = "content", columnDefinition = "TEXT")

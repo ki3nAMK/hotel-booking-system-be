@@ -28,7 +28,7 @@ public class Story {
     @Lob
     @Column(name = "img_list", columnDefinition = "TEXT")
     private String imgList;
-    @Column(name = "share_day", columnDefinition = "DATE")
+    @Column(name = "share_day", columnDefinition = "DATETIME")
     private Date shareDay;
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", unique = true)

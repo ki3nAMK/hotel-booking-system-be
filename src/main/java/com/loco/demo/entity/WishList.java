@@ -34,14 +34,14 @@ public class WishList {
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "hotel_id")
     private Hotel hotel;
-    @Column(name = "create_at", columnDefinition = "DATE")
+    @Column(name = "create_at", columnDefinition = "DATETIME")
     private Date createAt;
 
     public SecureUser getUser() {
         return new SecureUser(this.user);
     }
 
-    public HotelDTO getHotel(){
+    public HotelDTO getHotel() {
         return new HotelDTO(this.hotel);
     }
 }

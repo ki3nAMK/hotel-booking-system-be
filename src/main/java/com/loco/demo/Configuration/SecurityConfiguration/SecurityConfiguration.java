@@ -110,6 +110,7 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity.authorizeHttpRequests(auth -> auth
                 .requestMatchers(AntPathRequestMatcher.antMatcher("/admin/**")).hasRole("ADMIN")
+                .requestMatchers(AntPathRequestMatcher.antMatcher("/api/v1/seller/reservation")).hasRole("SELLER")
                 .requestMatchers(AntPathRequestMatcher.antMatcher("/error/**")).permitAll()
                 .requestMatchers(AntPathRequestMatcher.antMatcher("/api/v1/authen/**")).permitAll()
                 .requestMatchers(AntPathRequestMatcher.antMatcher("/api/v1/hotel/**")).permitAll()
