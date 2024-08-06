@@ -48,6 +48,11 @@ public class ReservationServiceImpl implements ReservationService {
         public Reservation makeReservation(String id, ReservationRequest reservationRequest) {
                 User myUser = userService.getMyInfo();
                 Hotel reserveHotel = hotelService.getHotelById(id);
+                Reservation existHotelReservation = reservationRepo.findByHotel(reserveHotel).orElse(null);
+                if (existHotelReservation != null && existHotelReservation.getStatus() == 0) {
+                        throw new RuntimeException(
+                                "This hotel is in pending. Please wait until the owner completely processing.");
+                }
 
                 Reservation reservation = new Reservation();
                 reservation.setCheckIn(reservationRequest.getCheckIn());
@@ -76,56 +81,66 @@ public class ReservationServiceImpl implements ReservationService {
         }
 
         @Override
-        public ListResponse<Reservation> getListReservation(int page, int limit, boolean isUser, User user,String type) {
+        public ListResponse<Reservation> getListReservation(int page, int limit, boolean isUser, User user,
+                        String type) {
                 Pageable pageable = PageRequest.of(page, limit);
-                Boolean choosen=null;
-                Byte status=null;
-                if(type!=null&&type.equals("upcoming")) choosen=false;
-                else if(type!=null&&type.equals("past")) choosen=true;
-                if(!isUser){
-                        if(type!=null&&type.equals("approve")) status=(byte)1;
-                        else if(type!=null&&type.equals("reject")) status=(byte)2;
-                        else if(type!=null&&type.equals("cancelled")) status=(byte)3;
+                Boolean choosen = null;
+                Byte status = null;
+                if (type != null && type.equals("upcoming"))
+                        choosen = false;
+                else if (type != null && type.equals("past"))
+                        choosen = true;
+                if (!isUser) {
+                        if (type != null && type.equals("approve"))
+                                status = (byte) 1;
+                        else if (type != null && type.equals("reject"))
+                                status = (byte) 2;
+                        else if (type != null && type.equals("cancelled"))
+                                status = (byte) 3;
                 }
                 Page<Reservation> pageReservation = isUser ? reservationRepo.findByUser(user, pageable, choosen)
-                                : reservationRepo.findByOwner(user, pageable,status,choosen);
+                                : reservationRepo.findByOwner(user, pageable, status, choosen);
                 return new ListResponse<Reservation>(pageReservation.getContent(), pageReservation.getTotalElements());
         }
 
-    @Override
-    public Reservation updateReservation(String id, UpdateReservationForm updateReservationForm) {
-        User user=userService.getMyInfo();
-        Role role=roleAuthenRepo.findByAuthority("SELLER").get();
-        Reservation reservation=reservationRepo.findById(id).orElseThrow(()->new UsernameNotFoundException("NO RESERVATION FOUND IN DATABASE!!!"));
-        if(user.getAuthorities().contains(role)){
-                if(user.getUserId().equals(reservation.getOwner().getUserId())){
-                        Byte status=updateReservationForm.getStatus();
-                        if(!(status==1||status==2)){
-                                throw new RuntimeException("This reservation can not be updated");
-                        }
-                        reservation.setStatus(status);
-                        notificationService.makeNotification(reservation.OriginalUser(), 
-                                "FROM SELLER "+reservation.getOwner().getName()+" : "+updateReservationForm.getNote()  
-                        , new Date());
-                        return reservation;
-                }
-                else throw new RuntimeException("You have no ability to update this reservation");
+        @Override
+        public Reservation updateReservation(String id, UpdateReservationForm updateReservationForm) {
+                User user = userService.getMyInfo();
+                Role role = roleAuthenRepo.findByAuthority("SELLER").get();
+                Reservation reservation = reservationRepo.findById(id).orElseThrow(
+                                () -> new UsernameNotFoundException("NO RESERVATION FOUND IN DATABASE!!!"));
+                if (user.getAuthorities().contains(role)) {
+                        if (user.getUserId().equals(reservation.getOwner().getUserId())) {
+                                Byte status = updateReservationForm.getStatus();
+                                if (!(status == 1 || status == 2)) {
+                                        throw new RuntimeException("This reservation can not be updated");
+                                }
+                                reservation.setStatus(status);
+                                notificationService.makeNotification(reservation.OriginalUser(),
+                                                "FROM SELLER " + reservation.getOwner().getName() + " : "
+                                                                + updateReservationForm.getNote(),
+                                                new Date());
+                                return reservation;
+                        } else
+                                throw new RuntimeException("You have no ability to update this reservation");
+                } else
+                        throw new AccessDeniedException("Your role must be a salesperson to perform this function");
         }
-        else throw new AccessDeniedException("Your role must be a salesperson to perform this function");
-    }
 
-    @Override
-    public Reservation cancelReservation(String id, UpdateCancelRservationForm updateCancelRservationForm) {
-        User user=userService.getMyInfo();
-        Reservation reservation=reservationRepo.findById(id).orElseThrow(()->new UsernameNotFoundException("NO RESERVATION FOUND IN DATABASE!!!"));
-        if(user.getUserId().equals(reservation.getUser().getUserId())){
-                reservation.setStatus((byte)3);
-                notificationService.makeNotification(reservation.OriginalOwner(), 
-                        "FROM USER "+reservation.getOwner().getName()+" BOOKING "+reservation.getHotel().getName()+": "+
-                        updateCancelRservationForm.getNote()
-                , new Date());
-                return reservation;
+        @Override
+        public Reservation cancelReservation(String id, UpdateCancelRservationForm updateCancelRservationForm) {
+                User user = userService.getMyInfo();
+                Reservation reservation = reservationRepo.findById(id).orElseThrow(
+                                () -> new UsernameNotFoundException("NO RESERVATION FOUND IN DATABASE!!!"));
+                if (user.getUserId().equals(reservation.getUser().getUserId())) {
+                        reservation.setStatus((byte) 3);
+                        notificationService.makeNotification(reservation.OriginalOwner(),
+                                        "FROM USER " + reservation.getOwner().getName() + " BOOKING "
+                                                        + reservation.getHotel().getName() + ": " +
+                                                        updateCancelRservationForm.getNote(),
+                                        new Date());
+                        return reservation;
+                } else
+                        throw new RuntimeException("You have no ability to update this reservation");
         }
-        else throw new RuntimeException("You have no ability to update this reservation");
-    }
 }

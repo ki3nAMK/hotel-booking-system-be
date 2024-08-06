@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.loco.demo.AuthenModel.User;
 import com.loco.demo.utils.Converters.SecureUser;
 
@@ -31,6 +32,7 @@ public class Hotel {
     @Column(name = "id", length = 50)
     private String id;
     @Column(name = "create_at", columnDefinition = "DATETIME")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+7")
     private Date createAt;
     @Column(name = "thumbnail", length = 255)
     private String thumbnail;

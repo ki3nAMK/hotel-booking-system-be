@@ -2,6 +2,7 @@ package com.loco.demo.entity;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.loco.demo.AuthenModel.User;
 
 import jakarta.persistence.Column;
@@ -29,6 +30,7 @@ public class Story {
     @Column(name = "img_list", columnDefinition = "TEXT")
     private String imgList;
     @Column(name = "share_day", columnDefinition = "DATETIME")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+7")
     private Date shareDay;
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", unique = true)

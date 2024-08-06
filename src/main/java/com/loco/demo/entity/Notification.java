@@ -2,6 +2,7 @@ package com.loco.demo.entity;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.loco.demo.AuthenModel.User;
 import com.loco.demo.utils.Converters.SecureUser;
 
@@ -33,6 +34,7 @@ public class Notification {
     @JoinColumn(name = "user_id", unique = true)
     private User user;
     @Column(name = "create_at", columnDefinition = "DATETIME")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+7")
     private Date createAt;
     @Column(name = "status")
     private Byte status;

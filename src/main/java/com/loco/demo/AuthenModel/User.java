@@ -1,5 +1,6 @@
 package com.loco.demo.AuthenModel;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.loco.demo.entity.Location;
 import com.loco.demo.utils.Constants.Const;
 import jakarta.persistence.*;
@@ -23,6 +24,7 @@ public class User implements UserDetails {
     @Column(name = "gender")
     private Byte gender;
     @Column(name = "birthday", columnDefinition = "DATE")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+7")
     private Date birthday;
     @Column(name = "email", length = 50)
     private String email;
@@ -43,6 +45,7 @@ public class User implements UserDetails {
     @Column(name = "online_status")
     private Boolean onlineStatus;
     @Column(name = "last_online", columnDefinition = "DATE")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+7")
     private Date lastOnline;
 
     @ManyToMany(fetch = FetchType.EAGER)
