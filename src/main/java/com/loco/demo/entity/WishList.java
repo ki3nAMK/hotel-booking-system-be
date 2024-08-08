@@ -2,6 +2,7 @@ package com.loco.demo.entity;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.loco.demo.AuthenModel.User;
 import com.loco.demo.DTO.JSON.HotelDTO;
 import com.loco.demo.utils.Converters.SecureUser;
@@ -35,6 +36,7 @@ public class WishList {
     @JoinColumn(name = "hotel_id")
     private Hotel hotel;
     @Column(name = "create_at", columnDefinition = "DATETIME")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+7")
     private Date createAt;
 
     public SecureUser getUser() {
