@@ -1,5 +1,6 @@
 package com.loco.demo.utils.Converters;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.loco.demo.AuthenModel.Role;
@@ -15,6 +16,7 @@ public class SecureUser{
     private String username;
     private String name;
     private Byte gender;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+7")
     private Date birthday;
     private String email;
     private String phoneNumber;
@@ -22,6 +24,7 @@ public class SecureUser{
     private String location;
     private Role role;
     private Boolean onlineStatus;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+7")
     private Date lastOnline;
     private Set<Role> authorities;
     private Location address;
