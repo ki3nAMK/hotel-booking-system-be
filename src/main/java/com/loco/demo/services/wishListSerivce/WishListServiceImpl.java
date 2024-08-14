@@ -61,8 +61,9 @@ public class WishListServiceImpl implements WishListService {
 
     @Override
     public ListResponse<WishList> getWishList(int page, int limit) {
+        User myUser = userService.getMyInfo();
         Pageable pageable = PageRequest.of(page, limit);
-        Page<WishList> pageWishList = wishListRepo.findAll(pageable);
+        Page<WishList> pageWishList = wishListRepo.findByUser(myUser, pageable);
         return new ListResponse<WishList>(pageWishList.getContent(), pageWishList.getTotalElements());
     }
 

@@ -54,4 +54,12 @@ public class StoryServiceImpl implements StoryService {
         }
         else throw new RuntimeException("You only have one story");
     }
+
+    @Override
+    public ListResponse<Story> getMyStory(int page, int limit) {
+        User myUser = userService.getMyInfo();
+        Pageable pageable=PageRequest.of(page, limit);
+        Page<Story> pageStory = storyRepo.findByUser(myUser,pageable);
+        return new ListResponse<Story>(pageStory.getContent(), pageStory.getTotalElements());
+    }
 }
