@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.loco.demo.AuthenModel.User;
 import com.loco.demo.utils.Converters.SecureUser;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -52,7 +53,7 @@ public class Hotel {
     private Byte mediumPeriod;
     @Column(name = "max_period")
     private Byte maxPeriod;
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinColumn(name = "furniture_id")
     private Furniture furniture;
     @OneToOne(fetch = FetchType.EAGER)
@@ -65,7 +66,7 @@ public class Hotel {
     private String amenities;
     @Column(name = "safety", length = 255)
     private String safety;
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinColumn(name = "detail_id")
     private HotelDetail detail;
     @OneToOne(fetch = FetchType.EAGER)
@@ -80,12 +81,12 @@ public class Hotel {
     @Lob
     @Column(name = "description", columnDefinition = "TEXT")
     private String description;
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinColumn(name = "location_id")
     private Location locationId;
     @Column(name = "slug", length = 255)
     private String slug;
-    
+
     public List<String> getImgList() {
         return this.imgList != null ? Arrays.asList(this.imgList.split("\\*")) : Collections.emptyList();
     }
@@ -102,7 +103,7 @@ public class Hotel {
         return new SecureUser(this.seller);
     }
 
-    public User OriginalUser(){
+    public User OriginalUser() {
         return this.seller;
     }
 }

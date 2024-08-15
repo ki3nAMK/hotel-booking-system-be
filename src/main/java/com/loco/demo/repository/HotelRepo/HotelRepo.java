@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import com.loco.demo.AuthenModel.User;
 import com.loco.demo.entity.Hotel;
 
 @Repository
@@ -38,4 +39,6 @@ public interface HotelRepo extends JpaRepository<Hotel, String> {
 
         @Query("SELECT h FROM Hotel h WHERE ( :slug IS NULL OR h.slug= :slug )")
         public Optional<Hotel> findHotelDetailByHotelSlug(String slug);
+
+        public Page<Hotel> findBySeller(User seller, Pageable pageable);
 }

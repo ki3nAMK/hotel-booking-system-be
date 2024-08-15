@@ -28,11 +28,17 @@ public class UserStoryController {
     @GetMapping("/list/story")
     public ListResponse<Story> getListStory(@RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int limit) {
-        return storyService.getListStory(page-1,limit);
+        return storyService.getListStory(page - 1, limit);
     }
 
     @PostMapping("/story/add")
-    public Story addStory(@RequestBody StoryForm storyForm){
+    public Story addStory(@RequestBody StoryForm storyForm) {
         return storyService.addStory(storyForm);
+    }
+
+    @GetMapping("/my-story")
+    public ListResponse<Story> getMyStory(@RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int limit) {
+        return storyService.getMyStory(page - 1, limit);
     }
 }

@@ -16,4 +16,6 @@ public interface StoryRepo extends JpaRepository<Story, String> {
     public Page<Story> findByShareDayBetweenOrderByShareDayDesc(Pageable pageable, Date oneWeekAgo, Date now);
 
     public Optional<Story> findByUser(User user);
+
+    public Page<Story> findByUser(User user, Pageable pageable);
 }
