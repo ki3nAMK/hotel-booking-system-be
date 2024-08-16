@@ -12,10 +12,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.loco.demo.AuthenModel.Role;
 import com.loco.demo.AuthenModel.User;
 import com.loco.demo.DTO.JSON.ListResponse;
 import com.loco.demo.entity.Hotel;
 import com.loco.demo.entity.WishList;
+import com.loco.demo.repository.AuthenRepo.RoleAuthenRepo;
 import com.loco.demo.repository.WishList.WishListRepo;
 import com.loco.demo.services.authenService.AuthenticationService;
 import com.loco.demo.services.hotelService.HotelService;
@@ -29,25 +31,32 @@ public class WishListServiceImpl implements WishListService {
     private HotelService hotelService;
     private UserService userService;
     private NotificationService notificationService;
+    private RoleAuthenRepo roleAuthenRepo;
 
     @Autowired
     public WishListServiceImpl(WishListRepo wishListRepo, AuthenticationService authenticationService,
-            HotelService hotelService, UserService userService, NotificationService notificationService) {
+            HotelService hotelService, UserService userService, NotificationService notificationService,
+            RoleAuthenRepo roleAuthenRepo) {
         this.wishListRepo = wishListRepo;
         this.authenticationService = authenticationService;
         this.hotelService = hotelService;
         this.userService = userService;
         this.notificationService = notificationService;
+        this.roleAuthenRepo = roleAuthenRepo;
     }
 
     @Override
     public WishList saveWishList(String id) {
         Hotel hotel = hotelService.getHotelById(id);
         System.out.println(wishListRepo.existsByHotelId(id));
+        Role role = roleAuthenRepo.findByAuthority("SELLER").get();
         if (!wishListRepo.existsByHotelId(id)) {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             String usernameFromToken = authentication.getName();
             User getUserFromDB = authenticationService.getDataFromUserNameService(usernameFromToken);
+            if(getUserFromDB.getAuthorities().contains(role)&&getUserFromDB.getUserId().equals(hotel.getSeller().getUserId())){
+                throw new RuntimeException("This function is not allowed");
+            }
             WishList wishList = new WishList(UUID.randomUUID().toString(), getUserFromDB, hotel,
                     new Date(System.currentTimeMillis()));
             wishListRepo.save(wishList);

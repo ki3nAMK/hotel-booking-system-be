@@ -64,14 +64,14 @@ public class HotelServiceImpl implements HotelService {
     }
 
     @Override
-    public ListResponse<HotelDTO> getMyListHotel(int page, int limit) {
+    public ListResponse<Hotel> getMyListHotel(int page, int limit) {
         User myUser = userService.getMyInfo();
         Role roleSeller = roleAuthenRepo.findByAuthority("SELLER").get();
         if (myUser.getAuthorities().contains(roleSeller)) {
             Pageable pageable = PageRequest.of(page, limit);
             Page<Hotel> pageHotel = hotelRepo.findBySeller(myUser, pageable);
-            return new ListResponse<HotelDTO>(
-                    pageHotel.getContent().stream().map(hotel -> new HotelDTO(hotel)).collect(Collectors.toList()),
+            return new ListResponse<Hotel>(
+                    pageHotel.getContent(),
                     pageHotel.getTotalElements());
         }
         throw new AccessDeniedException("You must have role seller to access");

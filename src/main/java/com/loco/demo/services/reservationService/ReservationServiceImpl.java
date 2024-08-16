@@ -1,6 +1,7 @@
 package com.loco.demo.services.reservationService;
 
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,33 +52,38 @@ public class ReservationServiceImpl implements ReservationService {
                 Reservation existHotelReservation = reservationRepo.findByHotel(reserveHotel).orElse(null);
                 if (existHotelReservation != null && existHotelReservation.getStatus() == 0) {
                         throw new RuntimeException(
-                                "This hotel is in pending. Please wait until the owner completely processing.");
+                                        "This hotel is in pending. Please wait until the owner completely processing.");
                 }
+                Role role = roleAuthenRepo.findByAuthority("SELLER").get();
+                if (myUser.getAuthorities().contains(role)
+                                && myUser.getUserId().equals(reserveHotel.getSeller().getUserId())) {
+                        throw new RuntimeException("This function is not allowed");
+                } else {
+                        Reservation reservation = new Reservation();
+                        reservation.setCheckIn(reservationRequest.getCheckIn());
+                        reservation.setCheckOut(reservationRequest.getCheckOut());
+                        reservation.setGuest(reservationRequest.getGuest());
+                        reservation.setUser(myUser);
+                        reservation.setPrice(reserveHotel.getPrice());
+                        reservation.setIsPast(false);
+                        reservation.setStatus((byte) 0);
+                        reservation.setOwner(reserveHotel.OriginalUser());
+                        reservation.setHotel(reserveHotel);
+                        reservation.setId(UUID.randomUUID().toString());
 
-                Reservation reservation = new Reservation();
-                reservation.setCheckIn(reservationRequest.getCheckIn());
-                reservation.setCheckOut(reservationRequest.getCheckOut());
-                reservation.setGuest(reservationRequest.getGuest());
-                reservation.setUser(myUser);
-                reservation.setPrice(reserveHotel.getPrice());
-                reservation.setIsPast(false);
-                reservation.setStatus((byte) 0);
-                reservation.setOwner(reserveHotel.OriginalUser());
-                reservation.setHotel(reserveHotel);
-                reservation.setId(UUID.randomUUID().toString());
+                        Date creatAt = new Date();
 
-                Date creatAt = new Date();
+                        notificationService.makeNotification(myUser,
+                                        "You have succesfully made a reservation for " + reserveHotel.getName() +
+                                                        "!\nPlease contact the owner if you have any questions.",
+                                        creatAt);
+                        notificationService.makeNotification(reserveHotel.OriginalUser(),
+                                        "You have a new reservation at " + reserveHotel.getName() +
+                                                        "!\nPlease check the guest profile and booking details to ensure everything is prepared for their arrival.",
+                                        creatAt);
 
-                notificationService.makeNotification(myUser,
-                                "You have succesfully made a reservation for " + reserveHotel.getName() +
-                                                "!\nPlease contact the owner if you have any questions.",
-                                creatAt);
-                notificationService.makeNotification(reserveHotel.OriginalUser(),
-                                "You have a new reservation at " + reserveHotel.getName() +
-                                                "!\nPlease check the guest profile and booking details to ensure everything is prepared for their arrival.",
-                                creatAt);
-
-                return reservationRepo.save(reservation);
+                        return reservationRepo.save(reservation);
+                }
         }
 
         @Override
@@ -142,5 +148,11 @@ public class ReservationServiceImpl implements ReservationService {
                         return reservation;
                 } else
                         throw new RuntimeException("You have no ability to update this reservation");
+        }
+
+        @Override
+        public List<Reservation> findByHotelIdAndUser(String id, User user) {
+                return reservationRepo.findByHotelIdAndUser(id, user)
+                                .orElseThrow(() -> new RuntimeException("NOT FOUND RESERVATION IN DATABASE!!"));
         }
 }

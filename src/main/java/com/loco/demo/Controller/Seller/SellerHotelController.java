@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.loco.demo.DTO.JSON.ExceptionResponseHandler;
-import com.loco.demo.DTO.JSON.HotelDTO;
 import com.loco.demo.DTO.JSON.HotelForm;
 import com.loco.demo.DTO.JSON.ListResponse;
 import com.loco.demo.DTO.Status.StatusResponseAPI;
@@ -33,7 +32,7 @@ public class SellerHotelController {
     }
 
     @GetMapping("/my-hotel")
-    public ListResponse<HotelDTO> getMyListHotel(@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "10") int limit){
+    public ListResponse<Hotel> getMyListHotel(@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "10") int limit){
         return hotelService.getMyListHotel(page-1,limit);
     }
 

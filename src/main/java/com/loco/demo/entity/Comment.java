@@ -7,6 +7,7 @@ import com.loco.demo.AuthenModel.User;
 import com.loco.demo.DTO.JSON.HotelDTO;
 import com.loco.demo.utils.Converters.SecureUser;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -38,18 +39,18 @@ public class Comment {
     @Lob
     @Column(name = "content", columnDefinition = "TEXT")
     private String content;
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE, CascadeType.REMOVE })
     @JoinColumn(name = "rating_id")
     private HotelRating rating;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "hotel_id")
     private Hotel hotel;
 
-    public SecureUser getUser(){
+    public SecureUser getUser() {
         return new SecureUser(this.user);
     }
 
-    public HotelDTO getHotel(){
+    public HotelDTO getHotel() {
         return new HotelDTO(this.hotel);
     }
 }

@@ -15,7 +15,7 @@ public interface HotelService {
 
     public Hotel getHotelById(String id);
 
-    public ListResponse<HotelDTO> getMyListHotel(int page,int limit);
+    public ListResponse<Hotel> getMyListHotel(int page,int limit);
 
     public Hotel addHotel(HotelForm hotelForm);
 
