@@ -1,7 +1,9 @@
 package com.loco.demo.Controller.Seller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,9 +13,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.loco.demo.DTO.JSON.ExceptionResponseHandler;
 import com.loco.demo.DTO.JSON.HotelDTO;
 import com.loco.demo.DTO.JSON.HotelForm;
 import com.loco.demo.DTO.JSON.ListResponse;
+import com.loco.demo.DTO.Status.StatusResponseAPI;
 import com.loco.demo.entity.Hotel;
 import com.loco.demo.services.hotelService.HotelService;
 
@@ -41,5 +45,12 @@ public class SellerHotelController {
     @PutMapping("/my-hotel/edit/{id}")
     public Hotel updateHotel(@PathVariable String id,@RequestBody HotelForm hotelForm){
         return hotelService.updateHotel(id,hotelForm);
+    }
+
+    @DeleteMapping("/hotel/{id}/delete")
+    public ResponseEntity<ExceptionResponseHandler> deleteHotel(@PathVariable String id){
+        hotelService.deleteHotel(id);
+        return ResponseEntity.ok()
+                .body(new ExceptionResponseHandler(StatusResponseAPI.OK, "000", "Successful deletion", ""));
     }
 }

@@ -53,7 +53,7 @@ public class Hotel {
     private Byte mediumPeriod;
     @Column(name = "max_period")
     private Byte maxPeriod;
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    @OneToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE,CascadeType.REMOVE})
     @JoinColumn(name = "furniture_id")
     private Furniture furniture;
     @OneToOne(fetch = FetchType.EAGER)
@@ -66,7 +66,7 @@ public class Hotel {
     private String amenities;
     @Column(name = "safety", length = 255)
     private String safety;
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE,CascadeType.REMOVE})
     @JoinColumn(name = "detail_id")
     private HotelDetail detail;
     @OneToOne(fetch = FetchType.EAGER)
@@ -81,7 +81,7 @@ public class Hotel {
     @Lob
     @Column(name = "description", columnDefinition = "TEXT")
     private String description;
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    @OneToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE,CascadeType.REMOVE})
     @JoinColumn(name = "location_id")
     private Location locationId;
     @Column(name = "slug", length = 255)

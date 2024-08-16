@@ -20,4 +20,6 @@ public interface HotelService {
     public Hotel addHotel(HotelForm hotelForm);
 
     public Hotel updateHotel(String id,HotelForm hotelForm);
+
+    public void deleteHotel(String id);
 }

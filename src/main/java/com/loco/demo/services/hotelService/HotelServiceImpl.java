@@ -159,4 +159,19 @@ public class HotelServiceImpl implements HotelService {
         return hotel;
     }
 
+    @Override
+    public void deleteHotel(String id) {
+        User myUser = userService.getMyInfo();
+        Role roleSeller = roleAuthenRepo.findByAuthority("SELLER").get();
+        if (myUser.getAuthorities().contains(roleSeller)) {
+            Hotel hotel = hotelRepo.findById(id).orElseThrow(()->new RuntimeException("NOT FOUND HOTEL IN DATABASE!!!"));
+            if(myUser.getUserId().equals(hotel.getSeller().getUserId())){
+                hotelRepo.deleteById(id);            
+            }
+            else{
+                throw new RuntimeException("You can't delete hotel not your own");
+            }
+        } else
+            throw new AccessDeniedException("You must have role SELLER to access");
+    }
 }
