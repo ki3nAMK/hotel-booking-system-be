@@ -1,5 +1,7 @@
 package com.loco.demo.services.reservationService;
 
+import java.util.List;
+
 import com.loco.demo.AuthenModel.User;
 import com.loco.demo.DTO.JSON.ListResponse;
 import com.loco.demo.DTO.JSON.ReservationRequest;
@@ -15,4 +17,6 @@ public interface ReservationService {
     public Reservation updateReservation(String id, UpdateReservationForm updateReservationForm);
 
     public Reservation cancelReservation(String id, UpdateCancelRservationForm updateCancelRservationForm);
+
+    public List<Reservation> findByHotelIdAndUser(String id,User user);
 }

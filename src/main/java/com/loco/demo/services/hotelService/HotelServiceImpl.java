@@ -64,14 +64,14 @@ public class HotelServiceImpl implements HotelService {
     }
 
     @Override
-    public ListResponse<HotelDTO> getMyListHotel(int page, int limit) {
+    public ListResponse<Hotel> getMyListHotel(int page, int limit) {
         User myUser = userService.getMyInfo();
         Role roleSeller = roleAuthenRepo.findByAuthority("SELLER").get();
         if (myUser.getAuthorities().contains(roleSeller)) {
             Pageable pageable = PageRequest.of(page, limit);
             Page<Hotel> pageHotel = hotelRepo.findBySeller(myUser, pageable);
-            return new ListResponse<HotelDTO>(
-                    pageHotel.getContent().stream().map(hotel -> new HotelDTO(hotel)).collect(Collectors.toList()),
+            return new ListResponse<Hotel>(
+                    pageHotel.getContent(),
                     pageHotel.getTotalElements());
         }
         throw new AccessDeniedException("You must have role seller to access");
@@ -159,4 +159,19 @@ public class HotelServiceImpl implements HotelService {
         return hotel;
     }
 
+    @Override
+    public void deleteHotel(String id) {
+        User myUser = userService.getMyInfo();
+        Role roleSeller = roleAuthenRepo.findByAuthority("SELLER").get();
+        if (myUser.getAuthorities().contains(roleSeller)) {
+            Hotel hotel = hotelRepo.findById(id).orElseThrow(()->new RuntimeException("NOT FOUND HOTEL IN DATABASE!!!"));
+            if(myUser.getUserId().equals(hotel.getSeller().getUserId())){
+                hotelRepo.deleteById(id);            
+            }
+            else{
+                throw new RuntimeException("You can't delete hotel not your own");
+            }
+        } else
+            throw new AccessDeniedException("You must have role SELLER to access");
+    }
 }

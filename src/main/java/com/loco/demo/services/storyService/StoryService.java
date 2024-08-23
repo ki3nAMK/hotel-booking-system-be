@@ -10,4 +10,6 @@ public interface StoryService {
     public Story addStory(StoryForm storyForm);
 
     public ListResponse<Story> getMyStory(int page, int limit);
+
+    public void deleteStory(String id);
 }

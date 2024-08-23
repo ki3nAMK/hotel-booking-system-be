@@ -42,17 +42,13 @@ public class StoryServiceImpl implements StoryService {
     @Override
     public Story addStory(StoryForm storyForm) {
         User myUser = userService.getMyInfo();
-        Story existUserStory = storyRepo.findByUser(myUser).orElse(null);
-        if(existUserStory == null){
-            Story story = new Story();
-            story.setId(UUID.randomUUID().toString());
-            story.setShareDay(new Date());
-            story.setUser(myUser);
-            story.setImg(storyForm.getImg());
-    
-            return storyRepo.save(story);
-        }
-        else throw new RuntimeException("You only have one story");
+        Story story = new Story();
+        story.setId(UUID.randomUUID().toString());
+        story.setShareDay(new Date());
+        story.setUser(myUser);
+        story.setImg(storyForm.getImg());
+
+        return storyRepo.save(story);
     }
 
     @Override
@@ -61,5 +57,15 @@ public class StoryServiceImpl implements StoryService {
         Pageable pageable=PageRequest.of(page, limit);
         Page<Story> pageStory = storyRepo.findByUser(myUser,pageable);
         return new ListResponse<Story>(pageStory.getContent(), pageStory.getTotalElements());
+    }
+
+    @Override
+    public void deleteStory(String id) {
+        Story story = storyRepo.findById(id).orElseThrow(()->new RuntimeException("NOT FOUND STORY IN DATABASE"));
+        User myUser = userService.getMyInfo();
+        if(myUser.getUserId().equals(story.getUser().getUserId())){
+            storyRepo.deleteById(id);
+        }
+        else throw new RuntimeException("Not your own story");
     }
 }
